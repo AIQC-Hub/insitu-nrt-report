@@ -1,17 +1,17 @@
 ---
-title: "Summary of NetCDF files"
-output:
-  html_document:
-    theme: flatly
+title: "Summary of Baltic Sea (BO)"
+description: |
+  Summary report generated from a single Parquet file has been created from over 750 NetCDF files from Baltic Sea NRT in situ observations.
+output: 
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
 ---
 
 ```{r include = FALSE}
 knitr::opts_chunk$set(echo=FALSE)
-```
-
-```{r, echo = FALSE, message = FALSE, warning = FALSE}
 r_func_path <- "./_func"
-r_funcs <- c("libraries.Rmd", "common.Rmd", "netcdf.Rmd")
+r_funcs <- c("libraries.Rmd", "common.Rmd", "common_bo.Rmd", "netcdf_bo.Rmd")
 ```
 
 ```{r, import, child=file.path(r_func_path, r_funcs)}
@@ -19,19 +19,14 @@ r_funcs <- c("libraries.Rmd", "common.Rmd", "netcdf.Rmd")
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 # Common variables
-rsc_dir <- "./resources"
-#rsc_dir <- "/Users/a21379/data/aiqc/htmlreport/nrt_bo/resources"
-#rsc_dir <- "/scratch/data/aiqc/htmlreport/nrt_bo/nrt_bo/resources"
+rsc_dir <- "/scratch/data/aiqc/merged/nrt_bo"
+#rsc_dir <- "./resources"
 
 bo_file_name <- file.path(rsc_dir, "netcdf_nrt_bo.parquet")
 df_bo <- read_parquet(bo_file_name)
 df_bo_uniq_profiles <- get_unique_profile_no(df_bo)
 
 ```
-
-A single [Parquet](https://parquet.apache.org/) file has been created from over 750 NetCDF files from Baltic Sea NRT in situ observations.
-
----
 
 ## 1. Basic Information
 
@@ -41,12 +36,9 @@ A single [Parquet](https://parquet.apache.org/) file has been created from over 
   - **Region**: Baltic Sea (BO)
   - **Category**: CT (CTD)
 
----
+### Parquet file
 
-### Pre-processed files
-
-  - **Header information**: [netcdf_nrt_bo_header.yaml](./resources/netcdf_nrt_bo_header.yaml)
-  - **BO data**: [netcdf_nrt_bo.parquet](./resources/netcdf_nrt_bo.parquet)
+  - **BO data**: netcdf_nrt_bo.parquet
 
 ---
 
@@ -69,40 +61,8 @@ summary_loc_table <- netcdf_loc_summary(summary_table_netcdf2)
  - **Number of platform**: `r formatC(nrow(summary_table_netcdf2), big.mark=",")`
  - **Number of profiles**: `r formatC(sum(summary_table_netcdf2$profile_count), big.mark=",")`
 
----
 
-### Column types
-
-```{r, echo = FALSE, results = 'asis'}
-kbl(summary_table, caption = "Variable names and data types") %>% 
-  kable_styling(bootstrap_options = c("striped", "hover",
-                                      "condensed", "responsive"))
-```
-
-<div class="warning" style='padding:1em; background-color:#E9D8FD; color:#69337A'>
-<span>
-<p style='text-align:center'>
-<b>Missing `pres`</b></p>
-<p>
-
-Values were generated from the 'deph' column when NetCDF files lacked this column. The 'p_from_z' function from the
- <a href="https://www.teos-10.org/">Thermodynamic Equation of Seawater 2010 (TEOS-10)</a>
-was used for the conversion with the following arguments.
-
-<ul>
-  <li><b>z</b>: deph</li>
-  <li><b>lat</b>: latitude</li>
-  <li><b>geo_strf_dyn_heigh</b>: None</li>
-  <li><b>sea_surface_geopotential</b>: None</li>
-</ul>
-
-</p>
-</span>
-</div>
-
----
-
-### Summary statistics by profile
+### Summary statistics by profiles
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, results = 'asis'}
 summary_table_netcdf2 <- format_netcdf_summary_2(summary_table_netcdf2)
@@ -117,7 +77,8 @@ create_dt_summary_tab(summary_table_netcdf2)
  - **Longitude**: `r round(min(summary_loc_table[, "Min(Lon)"]), 3)` to `r round(max(summary_loc_table[, "Max(Lon)"]), 3)`
  - **Latitude**: `r round(min(summary_loc_table[, "Min(Lat)"]), 3)` to `r round(max(summary_loc_table[, "Max(Lat)"]), 3)`
 
----
+
+### Locations by profiles
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, results = 'asis'}
 loc_table_cols <- c("Min(Lon)", "Max(Lon)", "Diff(Lon)", 
@@ -125,8 +86,6 @@ loc_table_cols <- c("Min(Lon)", "Max(Lon)", "Diff(Lon)",
 create_dt_summary_tab(summary_loc_table, cols=loc_table_cols)
 
 ```
-
----
 
 ### Mapped locations of all profiles and three selected platforms
 
@@ -151,8 +110,6 @@ print(plot_grid(p_long_x_lat, p_long_x_lat_UMFF9A13,
 
 ```
 
----
-
 ### Histograms of longitudes and latitudes from all profiles
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.width = 10}
@@ -170,7 +127,7 @@ print(plot_grid(p_long_dense, p_lat_dense, nrow = 1))
 
 ## 4. Distribution of profiles over time
 
-### Number of profiles {.tabset .tabset-pills }
+### Number of profiles
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.width = 10}
 
@@ -200,25 +157,6 @@ p_month_hist <- create_sample_time_hist(df_month, "Month")
 
 print(p_month_hist)
 ```
-
-#### Year-month
-
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.width = 10}
-p_year_month_hist <- create_sample_time_hist(df_year_month, "Year-month") +
-  scale_x_discrete(
-    labels = function(x) {
-      years <- as.numeric(substr(x, 1, 4))
-      months <- substr(x, 6, 7)
-      ifelse(years %% 5 == 0 & months == "01", substr(x, 1, 4), "")
-    }
-  )
-
-print(p_year_month_hist)
-```
-
-###
-
----
 
 ### Mapped locations of four time spans
 
@@ -260,8 +198,6 @@ To identify potential duplicate profiles, the following variables must match:
  - Rounded precise longitude (`round(precise_longitude, 3)`)
  - Rounded precise latitude (`round(precise_latitude, 3)`)
 
----
-
 ### Duplicate profiles
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
@@ -284,8 +220,6 @@ To identify potential duplicate profiles, the following variables must match:
  - Timestamp (`profile_timestamp`)
  - Rounded precise longitude (`round(precise_longitude, 3)`)
  - Rounded precise latitude (`round(precise_latitude, 3)`)
-
----
 
 ### Duplicate profiles
 
@@ -323,8 +257,6 @@ print(plot_grid(p_obs_count_hist, p_obs_count_hist_d100,
                 nrow = 2))
 
 ```
-
----
 
 ### Mapped locations of 1, 2, 3000-3600, and ≥4000 observations
 
