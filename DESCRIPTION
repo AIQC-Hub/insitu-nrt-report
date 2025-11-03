@@ -17,5 +17,4 @@ Imports:
     rlang,
     ggpubr,
     cowplot,
-    scales,
-    xaringanExtra
+    scales
