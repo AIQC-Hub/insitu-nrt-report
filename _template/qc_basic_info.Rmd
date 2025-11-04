@@ -4,5 +4,5 @@
 
 ### Input data file
 
-  - **{{input}}**: {{input_name}}
+  - **{{region_code2}} data**: [{{parquet}}](parquet_url)
   - **Filtered**: No
