@@ -11,7 +11,7 @@ output:
 ```{r include = FALSE}
 knitr::opts_chunk$set(echo=FALSE)
 r_func_path <- "./_func"
-r_funcs <- c("libraries.Rmd", "common.Rmd", "common_bo.Rmd", "netcdf_bo.Rmd")
+r_funcs <- c("libraries.Rmd", "common.Rmd", "common_bo.Rmd", "summary_common.Rmd", "summary_precise.Rmd")
 ```
 
 ```{r, import, child=file.path(r_func_path, r_funcs)}

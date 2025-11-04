@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo=FALSE)
 
 # Common functions
 r_func_path <- "./_func"
-r_funcs <- c("libraries.Rmd", "common.Rmd", "common_bo.Rmd", "netcdf_bo.Rmd", "qc.Rmd")
+r_funcs <- c("libraries.Rmd", "common.Rmd", "common_bo.Rmd", "qc.Rmd")
 
 # Variables
 var <- "psal"
