@@ -19,4 +19,5 @@ Imports:
     cowplot,
     scales,
     maps,
-    xaringanExtra
+    hexbin,
+    xaringanExtra,
