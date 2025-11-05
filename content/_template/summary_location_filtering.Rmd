@@ -1,0 +1,55 @@
+## 2. Location filtering
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+summary_table_netcdf <- netcdf_summary_1({{df}})
+summary_table_netcdf2 <- netcdf_summary_2(summary_table_netcdf)
+
+lat_range <- range(summary_table_netcdf$latitude)
+lon_range <- range(summary_table_netcdf$longitude)
+p_loc_original <- summary_table_netcdf %>%
+ create_region_scatter("Original data", lat_range, lon_range)
+
+```
+
+### Original data
+
+ - **Number of observations**: `r formatC(nrow({{df}}), big.mark=",")`
+ - **Number of platform**: `r formatC(nrow(summary_table_netcdf2), big.mark=",")`
+ - **Number of profiles**: `r formatC(sum(summary_table_netcdf2$profile_count), big.mark=",")`
+
+---
+
+### Filtering criteria
+
+ - **Longitude range**: `r bo_min_lon` to `r bo_max_lon`
+ - **Latitude range**: `r bo_min_lat` to `r bo_max_lat`
+ - **Excluded area**:
+     - **Bottom left corner**: (Lon: `r bo_excl_lon_bl`, Lat: `r bo_excl_lat_bl`)
+     - **Top right corner**: (Lon: `r bo_excl_lon_tr`, Lat: `r bo_excl_lat_tr`)
+
+---
+
+### Data after filtering
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+{{df}} <- filer_locations({{df}})
+summary_table_netcdf <- netcdf_summary_1({{df}})
+
+lat_range <- range(summary_table_netcdf$latitude)
+lon_range <- range(summary_table_netcdf$longitude)
+p_loc_filter1 <- summary_table_netcdf %>%
+ create_region_scatter("Filtering Step 1", lat_range, lon_range)
+
+{{df}} <- exclude_locations({{df}})
+summary_table_netcdf <- netcdf_summary_1({{df}})
+summary_table_netcdf2 <- netcdf_summary_2(summary_table_netcdf)
+summary_loc_table <- netcdf_loc_summary(summary_table_netcdf2)
+
+p_loc_filter2 <- summary_table_netcdf %>%
+ create_region_scatter("Filtering Step 2", lat_range, lon_range)
+
+```
+
+ - **Number of observations**: `r formatC(nrow({{df}}), big.mark=",")`
+ - **Number of platform**: `r formatC(nrow(summary_table_netcdf2), big.mark=",")`
+ - **Number of profiles**: `r formatC(sum(summary_table_netcdf2$profile_count), big.mark=",")`
