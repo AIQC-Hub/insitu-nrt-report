@@ -1,5 +1,5 @@
 ---
-title: "Temperature"
+title: "Temperature  (BO)"
 description: |
   Basic analysis of the temperature data from Baltic Sea in situ NRT observations.
 output:

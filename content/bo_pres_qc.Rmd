@@ -1,5 +1,5 @@
 ---
-title: "Pressure QC"
+title: "Pressure QC (BO)"
 description: |
   Basic analysis of the pressure QC data from Baltic Sea in situ NRT observations.
 output:
