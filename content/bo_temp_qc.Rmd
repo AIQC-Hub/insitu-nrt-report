@@ -40,3 +40,12 @@ cat(res, sep = '\n')
 ```
 
 ---
+
+## 3. Distributions over time
+```{r, distributions, results = 'asis'}
+src <- knitr::knit_expand(t_qc_distributions)
+res <- knitr::knit_child(text = src, quiet = TRUE)
+cat(res, sep = '\n')
+```
+
+---

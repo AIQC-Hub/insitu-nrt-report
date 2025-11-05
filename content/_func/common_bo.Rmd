@@ -11,7 +11,7 @@ parquet_url <- "https://github.com/AIQC-Hub/insitu-nrt-report/releases/download/
 df_name <- "df_bo"
 
 # Path
-rsc_dir <- "../../data/nrt_bo"
+#rsc_dir <- "../../data/nrt_bo"
 #rsc_dir <- "../data/nrt_bo"
 
 # Data frame
