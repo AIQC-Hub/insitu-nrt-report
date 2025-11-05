@@ -10,6 +10,9 @@
 
 ```{r, message = FALSE, warning = FALSE}
 
+# Path
+rsc_dir <- "../../data"
+
 # Templates
 template_path <- "./_template"
 t_v_basic_info <- file.path(template_path, "var_basic_info.Rmd")
