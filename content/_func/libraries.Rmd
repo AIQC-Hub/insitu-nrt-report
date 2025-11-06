@@ -1,10 +1,11 @@
-```{r, message = FALSE, warning = FALSE}
+```{r, func_libraries, message = FALSE, warning = FALSE}
 
 library(fontawesome)
 library(kableExtra)
 library(DT)
 library(htmltools)
 library(arrow)
+library(data.table)
 library(tidyverse)
 library(rlang)
 library(ggpubr)

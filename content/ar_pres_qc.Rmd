@@ -1,7 +1,7 @@
 ---
-title: "Pressure QC (GL)"
+title: "Pressure QC (AR)"
 description: |
-  Basic analysis of the pressure QC data from the Baltic Sea in situ NRT observations.
+  Basic analysis of the pressure QC data from the Arctic Ocean in situ NRT observations.
 output:
   distill::distill_article:
     toc: true
@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo=FALSE)
 
 # Common functions
 r_func_path <- "./_func"
-r_funcs <- c("libraries.Rmd", "common.Rmd", "common_bo_gl.Rmd", "qc.Rmd")
+r_funcs <- c("libraries.Rmd", "common.Rmd", "common_ar.Rmd", "qc.Rmd")
 
 # Variables
 var <- "pres"
