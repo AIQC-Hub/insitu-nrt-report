@@ -21,4 +21,6 @@ kbl_table(flags) %>% kable_styling(font_size = 12)
 summary_table_qc <- qc_summary_1(df_filtered, {{qc_var}})
 create_dt_summary_tab(summary_table_qc %>% format_qc_summary_1(), cols=NULL)
 
+rm({{df}})
+
 ```

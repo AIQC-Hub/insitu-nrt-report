@@ -24,4 +24,7 @@ create_dt_summary_tab(summary_table_qc_year %>% format_qc_summary_year(), cols=N
 summary_table_qc_month <- qc_summary_time(df_month, {{qc_var}})
 create_dt_summary_tab(summary_table_qc_month %>% format_qc_summary_month(), cols=NULL)
 
+rm(df_year)
+rm(df_month)
+
 ```

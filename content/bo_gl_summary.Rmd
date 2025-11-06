@@ -27,7 +27,7 @@ cat(res, sep = '\n')
 
 ## 2. Location Filtering
 ```{r, location_filtering, results = 'asis'}
-src <- knitr::knit_expand(t_s_location_filtering, df=df_name)
+src <- knitr::knit_expand(t_s_location_filtering, df=df_name, df_filtered=df_filtered_name)
 res <- knitr::knit_child(text = src, quiet = TRUE)
 cat(res, sep = '\n')
 ```
@@ -36,7 +36,7 @@ cat(res, sep = '\n')
 
 ## 3. Descriptive Statistics of `r region_code1` CTD Data
 ```{r, descriptive_stats, results = 'asis'}
-src <- knitr::knit_expand(t_s_descriptive_stats, df=df_name)
+src <- knitr::knit_expand(t_s_descriptive_stats, df=df_filtered_name)
 res <- knitr::knit_child(text = src, quiet = TRUE)
 cat(res, sep = '\n')
 ```
@@ -63,13 +63,13 @@ cat(res, sep = '\n')
 
 ## 6. Duplicate profiles within platforms
 ```{r, duplicate_within, results = 'asis'}
-src <- knitr::knit_expand(t_s_duplicate_within, df=df_name)
+src <- knitr::knit_expand(t_s_duplicate_within, df=df_filtered_name)
 res <- knitr::knit_child(text = src, quiet = TRUE)
 cat(res, sep = '\n')
 ```
 
 ```{r, duplicate_details, results = 'asis'}
-src <- knitr::knit_expand(t_s_duplicate_within_details, df=df_name)
+src <- knitr::knit_expand(t_s_duplicate_within_details, df=df_filtered_name)
 res <- knitr::knit_child(text = src, quiet = TRUE)
 cat(res, sep = '\n')
 ```
@@ -78,8 +78,9 @@ cat(res, sep = '\n')
 
 ## 7. Duplicate profiles across platforms
 ```{r, duplicate_across, results = 'asis'}
-src <- knitr::knit_expand(t_s_duplicate_across, df=df_name)
+src <- knitr::knit_expand(t_s_duplicate_across, df=df_filtered_name)
 res <- knitr::knit_child(text = src, quiet = TRUE)
+cat(res, sep = '\n')
 cat(res, sep = '\n')
 ```
 
@@ -93,3 +94,7 @@ cat(res, sep = '\n')
 ```
 
 ---
+
+```{r, cleanup, include = FALSE}
+rm(list = ls())
+```
