@@ -12,6 +12,7 @@
 
 # Path
 rsc_dir <- "../../data"
+release_url <- "https://github.com/AIQC-Hub/insitu-nrt-report/releases/download/v0.1.0"
 
 # Templates
 template_path <- "./_template"
@@ -22,12 +23,16 @@ t_qc_basic_info <- file.path(template_path, "qc_basic_info.Rmd")
 t_qc_summary_stats <- file.path(template_path, "qc_summary_stats.Rmd")
 t_qc_distributions <- file.path(template_path, "qc_distribution.Rmd")
 t_s_basic_info <- file.path(template_path, "summary_basic_info.Rmd")
+t_s_location_filtering <- file.path(template_path, "summary_location_filtering.Rmd")
 t_s_descriptive_stats <- file.path(template_path, "summary_descriptive_stats.Rmd")
 t_s_locations <- file.path(template_path, "summary_locations.Rmd")
 t_s_distribution_time <- file.path(template_path, "summary_distribution_time.Rmd")
 t_s_duplicate_within <- file.path(template_path, "summary_duplicate_within.Rmd")
+t_s_duplicate_within_details <- file.path(template_path, "summary_duplicate_within_details.Rmd")
 t_s_duplicate_across <- file.path(template_path, "summary_duplicate_across.Rmd")
+t_s_duplicate_across_details <- file.path(template_path, "summary_duplicate_across_details.Rmd")
 t_s_observation_counts <- file.path(template_path, "summary_observation_counts.Rmd")
+t_location_filtering <- file.path(template_path, "location_filtering.Rmd")
 
 # Kable wrappers
 kbl_table <- function(x) {
@@ -124,9 +129,11 @@ find_duplicates_within_platforms_common <- function(df, longitude_var, latitude_
     mutate(lon2 = round({{ longitude_var }}, 3),
            lat2 = round({{ latitude_var }}, 3)) %>%
     group_by(platform_code, profile_timestamp, lon2, lat2) %>%
-    summarise(profile_nos = paste0(profile_no, collapse = ","), n = n()) %>%
+    summarise(profile_nos = paste0(profile_no, collapse = ","),
+              n = n(),
+              n2 = length(unique(platform_code))) %>%
     ungroup() %>%
-    filter(n > 1)
+    filter((n > 1) & (n2 == 1))
 }
 
 find_duplicates_across_platforms_common <- function(df, longitude_var, latitude_var) {
@@ -134,13 +141,16 @@ find_duplicates_across_platforms_common <- function(df, longitude_var, latitude_
     distinct(platform_code, profile_no, profile_timestamp, {{ longitude_var }}, {{ latitude_var }}) %>%
     mutate(lon2 = round({{ longitude_var }}, 3),
            lat2 = round({{ latitude_var }}, 3)) %>%
+    arrange(profile_timestamp, lon2, lat2) %>%
     group_by(profile_timestamp, lon2, lat2) %>%
     summarise(platform_codes = paste0(platform_code, collapse = ","),
-              profile_nos = paste0(profile_no, collapse = ","), n = n()) %>%
-    filter(n > 1)
+              profile_nos = paste0(profile_no, collapse = ","),
+              n = n(),
+              n2 = length(unique(platform_code))) %>%
+    filter((n > 1) & (n2 > 1))
 }
 
-summarise_df_dup_common <- function(df_orig, df_dup, longitude_var, latitude_var) {
+summarise_df_dup_within_common <- function(df_orig, df_dup, longitude_var, latitude_var) {
   df_orig  %>%
     mutate(lon2 = round({{ longitude_var }}, 3),
            lat2 = round({{ latitude_var }}, 3)) %>%
@@ -150,9 +160,31 @@ summarise_df_dup_common <- function(df_orig, df_dup, longitude_var, latitude_var
     summarise(n = n(),
               avg_pres = mean(pres, na.rm = FALSE),
               avg_temp = mean(temp, na.rm = FALSE),
-              avg_psal = mean(psal, na.rm = FALSE),
-              avg_deph = mean(deph, na.rm = FALSE)) %>%
+              avg_psal = mean(psal, na.rm = FALSE)) %>%
     ungroup()
+}
+
+summarise_df_dup_across_common <- function(df_orig, df_dup, longitude_var, latitude_var) {
+  df_dup2 <- df_dup %>%
+    mutate(
+      platform_code = str_split(platform_codes, ","),
+      profile_no = str_split(profile_nos, ",")
+    ) %>%
+    select(platform_code, profile_no) %>%
+    unnest(c(platform_code, profile_no)) %>%
+    mutate(profile_no = as.integer(profile_no))
+
+  df_orig  %>%
+    mutate(lon2 = round({{ longitude_var }}, 3),
+           lat2 = round({{ latitude_var }}, 3)) %>%
+    inner_join(df_dup2) %>%
+    group_by(platform_code, profile_no, profile_timestamp, lon2, lat2) %>%
+    summarise(n = n(),
+              avg_pres = mean(pres, na.rm = FALSE),
+              avg_temp = mean(temp, na.rm = FALSE),
+              avg_psal = mean(psal, na.rm = FALSE)) %>%
+    ungroup() %>%
+    arrange(profile_timestamp, lon2, lat2)
 }
 
 remove_duplicates_within_platforms_common <- function(df_orig, df_dup_summary) {

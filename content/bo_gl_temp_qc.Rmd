@@ -1,7 +1,7 @@
 ---
-title: "Practical Salinity QC  (BO)"
+title: "Temperature QC (GL)"
 description: |
-  Basic analysis of the salinity QC data from Baltic Sea in situ NRT observations.
+  Basic analysis of the temperature QC data from Baltic Sea in situ NRT observations.
 output:
   distill::distill_article:
     toc: true
@@ -13,15 +13,20 @@ knitr::opts_chunk$set(echo=FALSE)
 
 # Common functions
 r_func_path <- "./_func"
-r_funcs <- c("libraries.Rmd", "common.Rmd", "common_bo.Rmd", "qc.Rmd")
+r_funcs <- c("libraries.Rmd", "common.Rmd", "common_bo_gl.Rmd", "qc.Rmd")
 
 # Variables
-var <- "psal"
-qc_var <- "psal_qc"
-qc_var_name <- "Practical salinity QC flag"
+var <- "temp"
+qc_var <- "temp_qc"
+qc_var_name <- "Temperature QC flag"
 ```
 
 ```{r, import, child=file.path(r_func_path, r_funcs)}
+```
+
+```{r, location_filtering, include = FALSE}
+src <- knitr::knit_expand(t_location_filtering, df=df_name, df_filtered=df_filtered_name)
+res <- knitr::knit_child(text = src, quiet = TRUE)
 ```
 
 ## 1. Basic Information
@@ -34,7 +39,7 @@ cat(res, sep = '\n')
 
 ## 2. Summary statistics
 ```{r, summary_stats, results = 'asis'}
-src <- knitr::knit_expand(t_qc_summary_stats, df=df_name)
+src <- knitr::knit_expand(t_qc_summary_stats, df=df_filtered_name)
 res <- knitr::knit_child(text = src, quiet = TRUE)
 cat(res, sep = '\n')
 ```

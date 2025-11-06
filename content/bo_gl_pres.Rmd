@@ -1,7 +1,7 @@
 ---
-title: "Temperature  (BO)"
+title: "Pressure (GL)"
 description: |
-  Basic analysis of the temperature data from Baltic Sea in situ NRT observations.
+  Basic analysis of the pressure data from Baltic Sea in situ NRT observations.
 output:
   distill::distill_article:
     toc: true
@@ -13,15 +13,21 @@ knitr::opts_chunk$set(echo=FALSE)
 
 # Common functions
 r_func_path <- "./_func"
-r_funcs <- c("libraries.Rmd", "common.Rmd", "common_bo.Rmd", "var.Rmd")
+r_funcs <- c("libraries.Rmd", "common.Rmd", "common_bo_gl.Rmd", "var.Rmd")
 
 # Variables
-var <- "temp"
-var_name <- "Temperature"
-var_label <- "Temp"
+var <- "pres"
+var_name <- "Pressure"
+var_label <- "Pres"
+
 ```
 
 ```{r, import, include = FALSE, child=file.path(r_func_path, r_funcs)}
+```
+
+```{r, location_filtering, include = FALSE}
+src <- knitr::knit_expand(t_location_filtering, df=df_name, df_filtered=df_filtered_name)
+res <- knitr::knit_child(text = src, quiet = TRUE)
 ```
 
 ## 1. Basic Information
@@ -34,7 +40,7 @@ cat(res, sep = '\n')
 
 ## 2. Summary statistics
 ```{r, summary_stats, results = 'asis'}
-src <- knitr::knit_expand(t_v_summary_stats, df=df_name)
+src <- knitr::knit_expand(t_v_summary_stats, df=df_filtered_name)
 res <- knitr::knit_child(text = src, quiet = TRUE)
 cat(res, sep = '\n')
 ```

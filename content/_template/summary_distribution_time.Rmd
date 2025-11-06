@@ -19,6 +19,9 @@ df_month <- summary_table_netcdf %>%
 p_year_hist <- create_sample_time_hist(df_year, "Year")
 
 print(p_year_hist)
+
+rm(p_year_hist)
+
 ```
 :::
 
@@ -29,6 +32,8 @@ print(p_year_hist)
 p_month_hist <- create_sample_time_hist(df_month, "Month")
 
 print(p_month_hist)
+
+rm(p_month_hist)
 ```
 :::
 :::
@@ -59,4 +64,10 @@ p_long_x_lat_ts4 <- get_loc_by_timespan(ts_lst, "{{time_span4}}") %>%
 
 print(plot_grid(p_long_x_lat_ts1, p_long_x_lat_ts2,
                 p_long_x_lat_ts3, p_long_x_lat_ts4, nrow = 2))
+
+rm(p_long_x_lat_ts1)
+rm(p_long_x_lat_ts2)
+rm(p_long_x_lat_ts3)
+rm(p_long_x_lat_ts4)
+
 ```
