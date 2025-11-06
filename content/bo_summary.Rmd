@@ -68,6 +68,12 @@ res <- knitr::knit_child(text = src, quiet = TRUE)
 cat(res, sep = '\n')
 ```
 
+```{r, duplicate_details, results = 'asis'}
+src <- knitr::knit_expand(t_s_duplicate_across_details, df=df_name)
+res <- knitr::knit_child(text = src, quiet = TRUE)
+cat(res, sep = '\n')
+```
+
 ---
 
 ## 7. Observation counts by profile

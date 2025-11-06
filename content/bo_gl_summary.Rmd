@@ -27,7 +27,8 @@ cat(res, sep = '\n')
 
 ## 2. Location Filtering
 ```{r, location_filtering, results = 'asis'}
-res <- knitr::knit_expand(t_s_location_filtering, df=df_name)
+src <- knitr::knit_expand(t_s_location_filtering, df=df_name)
+res <- knitr::knit_child(text = src, quiet = TRUE)
 cat(res, sep = '\n')
 ```
 
@@ -63,6 +64,12 @@ cat(res, sep = '\n')
 ## 6. Duplicate profiles within platforms
 ```{r, duplicate_within, results = 'asis'}
 src <- knitr::knit_expand(t_s_duplicate_within, df=df_name)
+res <- knitr::knit_child(text = src, quiet = TRUE)
+cat(res, sep = '\n')
+```
+
+```{r, duplicate_details, results = 'asis'}
+src <- knitr::knit_expand(t_s_duplicate_within_details, df=df_name)
 res <- knitr::knit_child(text = src, quiet = TRUE)
 cat(res, sep = '\n')
 ```
