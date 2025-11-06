@@ -1,7 +1,7 @@
 ---
-title: "Temperature  (GL)"
+title: "Temperature (GL)"
 description: |
-  Basic analysis of the temperature data from Baltic Sea in situ NRT observations.
+  Basic analysis of the temperature data from the Baltic Sea in situ NRT observations.
 output:
   distill::distill_article:
     toc: true
@@ -37,7 +37,7 @@ cat(res, sep = '\n')
 
 ---
 
-## 2. Summary statistics
+## 2. Summary Statistics
 ```{r, summary_stats, results = 'asis'}
 src <- knitr::knit_expand(t_v_summary_stats, df=df_filtered_name)
 res <- knitr::knit_child(text = src, quiet = TRUE)
@@ -46,7 +46,7 @@ cat(res, sep = '\n')
 
 ---
 
-## 3. Distributions over time and location
+## 3. Distributions Over Time and Location
 ```{r, distributions, results = 'asis'}
 src <- knitr::knit_expand(t_v_distributions)
 res <- knitr::knit_child(text = src, quiet = TRUE)

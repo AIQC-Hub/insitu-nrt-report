@@ -8,7 +8,7 @@
 }
 </style>
 
-```{r, message = FALSE, warning = FALSE}
+```{r, func_common, message = FALSE, warning = FALSE}
 
 # Path
 rsc_dir <- "../../data"
@@ -24,6 +24,7 @@ t_qc_summary_stats <- file.path(template_path, "qc_summary_stats.Rmd")
 t_qc_distributions <- file.path(template_path, "qc_distribution.Rmd")
 t_s_basic_info <- file.path(template_path, "summary_basic_info.Rmd")
 t_s_location_filtering <- file.path(template_path, "summary_location_filtering.Rmd")
+t_s_location_filtering2 <- file.path(template_path, "summary_location_filtering2.Rmd")
 t_s_descriptive_stats <- file.path(template_path, "summary_descriptive_stats.Rmd")
 t_s_locations <- file.path(template_path, "summary_locations.Rmd")
 t_s_distribution_time <- file.path(template_path, "summary_distribution_time.Rmd")
@@ -77,25 +78,30 @@ split_time_spans_common <- function(df, ts1, ts1_from, ts1_to, ts2, ts2_from, ts
 }
 
 filer_locations_common <- function(df, min_lon, max_lon, min_lat, max_lat) {
-  df_filtered <- df %>%
-      group_by(platform_code, profile_no) %>%
-      summarise(longitude = first(longitude), latitude = first(latitude)) %>%
-      ungroup() %>%
-      dplyr::filter((longitude >= min_lon) & (longitude <= max_lon) & (latitude >= min_lat) & (latitude <= max_lat)) %>%
-      distinct(platform_code, profile_no)
+  setDT(df)
 
-  df %>% inner_join(df_filtered, by=c("platform_code", "profile_no"))
+  keep_groups <- df[, .SD[1L, .(longitude, latitude)], by = .(platform_code, profile_no)][
+    longitude >= min_lon & longitude <= max_lon &
+    latitude  >= min_lat & latitude  <= max_lat,
+    .(platform_code, profile_no)
+  ]
+
+  df[keep_groups, on = .(platform_code, profile_no)]
 }
 
 exclude_locations_common <- function(df, lon1, lat1, lon2, lat2) {
-  df_filtered <- df %>%
-      group_by(platform_code, profile_no) %>%
-      summarise(longitude = first(longitude), latitude = first(latitude)) %>%
-      ungroup() %>%
-      dplyr::filter(!((longitude >= lon1) & (latitude >= lat1) & (longitude <= lon2) & (latitude <= lat2))) %>%
-      distinct(platform_code, profile_no)
+  setDT(df)
 
-  df %>% inner_join(df_filtered, by=c("platform_code", "profile_no"))
+  first_positions <- df[, .SD[1L, .(longitude, latitude)],
+                        by = .(platform_code, profile_no)]
+
+  outside_box <- first_positions[
+    !(longitude >= lon1 & longitude <= lon2 &
+      latitude  >= lat1 & latitude  <= lat2),
+    .(platform_code, profile_no)
+  ]
+
+  df[outside_box, on = .(platform_code, profile_no)]
 }
 
 get_unique_profile_no_common <- function(df, longitude_var, latitude_var) {

@@ -7,7 +7,24 @@ exclude: ["script", "data", "rmd_child",
           "DESCRIPTION", "CHANGELOG.md", "README.md", "LICENSE"]
 navbar:
   right:
-    - text: "Arctic Sea"
+    - text: "Arctic Ocean"
+      menu:
+        - text: "Summary (AR)"
+          href: ar_summary.html
+        - text: "---"
+        - text: "Pres (AR)"
+          href: ar_pres.html
+        - text: "Temp (AR)"
+          href: ar_temp.html
+        - text: "Psal (AR)"
+          href: ar_psal.html
+        - text: "---"
+        - text: "Pres QC (AR)"
+          href: ar_pres_qc.html
+        - text: "Temp QC (AR)"
+          href: ar_temp_qc.html
+        - text: "Psal QC (AR)"
+          href: ar_psal_qc.html
       href: index.html
     - text: "Baltic Sea"
       menu:

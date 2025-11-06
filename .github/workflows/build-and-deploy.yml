@@ -51,6 +51,7 @@ jobs:
             any::DT
             any::htmltools
             any::arrow
+            any::data.table
             any::tidyverse
             any::rlang
             any::ggpubr

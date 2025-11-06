@@ -2,13 +2,15 @@
 summary_table_original <- netcdf_summary_1({{df}})
 summary_table_original_2 <- netcdf_summary_2(summary_table_original)
 
-df_filtered1 <- filer_locations({{df}})
-summary_table_filtered1 <- netcdf_summary_1(df_filtered1)
-summary_table_filtered1_2 <- netcdf_summary_2(summary_table_filtered1)
+if (file.exists(df_filtered_cache_name)) {
+  {{df_filtered}} <- readRDS(df_filtered_cache_name)
+} else {
+  {{df_filtered}} <- filer_locations({{df}})
+  saveRDS({{df_filtered}}, df_filtered_cache_name)
+}
 
-df_filtered2 <- exclude_locations(df_filtered1)
-summary_table_filtered2 <- netcdf_summary_1(df_filtered2)
-summary_table_filtered2_2 <- netcdf_summary_2(summary_table_filtered2)
+summary_table_filtered1 <- netcdf_summary_1({{df_filtered}})
+summary_table_filtered1_2 <- netcdf_summary_2(summary_table_filtered1)
 
 ```
 
@@ -16,9 +18,6 @@ summary_table_filtered2_2 <- netcdf_summary_2(summary_table_filtered2)
 
  - **Longitude range**: `r r_min_lon` to `r r_max_lon`
  - **Latitude range**: `r r_min_lat` to `r r_max_lat`
- - **Excluded area**:
-     - **Bottom left corner**: (Lon: `r r_excl_lon_bl`, Lat: `r r_excl_lat_bl`)
-     - **Top right corner**: (Lon: `r r_excl_lon_tr`, Lat: `r r_excl_lat_tr`)
 
 ### Mapped locations of all profiles and filtering effects
 
@@ -31,19 +30,12 @@ p_loc_original <- summary_table_original %>%
 lat_range <- range(summary_table_filtered1$latitude)
 lon_range <- range(summary_table_filtered1$longitude)
 p_loc_filter1 <- summary_table_filtered1 %>%
- create_region_scatter("Filtering Step 1", lat_range, lon_range)
+ create_region_scatter("Filtered data", lat_range, lon_range)
 
-lat_range <- range(summary_table_filtered2$latitude)
-lon_range <- range(summary_table_filtered2$longitude)
-p_loc_filter2 <- summary_table_filtered2 %>%
- create_region_scatter("Filtering Step 2", lat_range, lon_range)
-
-print(plot_grid(p_loc_original,
-                plot_grid(p_loc_filter1, p_loc_filter2, nrow = 1), nrow = 2))
+print(plot_grid(p_loc_original, p_loc_filter1, nrow = 2))
 
 rm(p_loc_original)
 rm(p_loc_filter1)
-rm(p_loc_filter2)
 
 ```
 
@@ -53,26 +45,14 @@ rm(p_loc_filter2)
  - **Number of platform**: `r formatC(nrow(summary_table_original_2), big.mark=",")`
  - **Number of profiles**: `r formatC(sum(summary_table_original_2$profile_count), big.mark=",")`
 
-### Counts after filtering step 1
+### Counts after filtering
 
- - **Number of observations**: `r formatC(nrow(df_filtered1), big.mark=",")`
+ - **Number of observations**: `r formatC(nrow({{df_filtered}}), big.mark=",")`
  - **Number of platform**: `r formatC(nrow(summary_table_filtered1_2), big.mark=",")`
  - **Number of profiles**: `r formatC(sum(summary_table_filtered1_2$profile_count), big.mark=",")`
 
-### Counts after filtering step 2
-
- - **Number of observations**: `r formatC(nrow(df_filtered2), big.mark=",")`
- - **Number of platform**: `r formatC(nrow(summary_table_filtered2_2), big.mark=",")`
- - **Number of profiles**: `r formatC(sum(summary_table_filtered2_2$profile_count), big.mark=",")`
-
 ```{r, t_summary_loc_filter3, echo = FALSE, message = FALSE, warning = FALSE}
 
-{{df_filtered}} <- df_filtered2
-if (!file.exists(df_filtered_cache_name)) {
-  saveRDS({{df_filtered}}, df_filtered_cache_name)
-}
-
 rm({{df}})
-rm(p_loc_filter1)
 
 ```
