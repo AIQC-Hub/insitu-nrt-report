@@ -15,7 +15,6 @@ netcdf_summary_2 <- function(df) {
               min_profile_timestamp = min(profile_timestamp),
               max_profile_timestamp = max(profile_timestamp),
               obs_count = sum(obs_count),
-              longitude = first(longitude), latitude = first(latitude),
               min_longitude = min(longitude), max_longitude = max(longitude),
               min_latitude = min(latitude), max_latitude = max(latitude)) %>%
     ungroup() %>%
