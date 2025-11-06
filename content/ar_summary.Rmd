@@ -1,0 +1,84 @@
+---
+title: "Summary of Arctic Sea (AR)"
+description: |
+  Summary report generated from a single Parquet file has been created from over 750 NetCDF files from Arctic Sea in situ NRT observations.
+output: 
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
+---
+
+```{r include = FALSE}
+knitr::opts_chunk$set(echo=FALSE)
+r_func_path <- "./_func"
+r_funcs <- c("libraries.Rmd", "common.Rmd", "common_ar.Rmd", "summary_common.Rmd", "summary_regular.Rmd")
+```
+
+```{r, import, child=file.path(r_func_path, r_funcs)}
+```
+
+## 1. Basic Information
+```{r, basic_info, results = 'asis'}
+res <- knitr::knit_expand(t_s_basic_info)
+cat(res, sep = '\n')
+```
+
+---
+
+## 2. Descriptive Statistics of `r region_code1` CTD Data
+```{r, descriptive_stats, results = 'asis'}
+src <- knitr::knit_expand(t_s_descriptive_stats, df=df_name)
+res <- knitr::knit_child(text = src, quiet = TRUE)
+cat(res, sep = '\n')
+```
+
+---
+
+## 3. Locations
+```{r, locations, results = 'asis'}
+src <- knitr::knit_expand(t_s_locations)
+res <- knitr::knit_child(text = src, quiet = TRUE)
+cat(res, sep = '\n')
+```
+
+---
+
+## 4. Distribution of profiles over time
+```{r, distribution_time, results = 'asis'}
+src <- knitr::knit_expand(t_s_distribution_time)
+res <- knitr::knit_child(text = src, quiet = TRUE)
+cat(res, sep = '\n')
+```
+
+---
+
+## 5. Duplicate profiles within platforms
+```{r, duplicate_within, results = 'asis'}
+src <- knitr::knit_expand(t_s_duplicate_within, df=df_name)
+res <- knitr::knit_child(text = src, quiet = TRUE)
+cat(res, sep = '\n')
+```
+
+---
+
+## 6. Duplicate profiles across platforms
+```{r, duplicate_across, results = 'asis'}
+src <- knitr::knit_expand(t_s_duplicate_across, df=df_name)
+res <- knitr::knit_child(text = src, quiet = TRUE)
+cat(res, sep = '\n')
+```
+
+---
+
+## 7. Observation counts by profile
+```{r, observation_counts, results = 'asis'}
+src <- knitr::knit_expand(t_s_observation_counts)
+res <- knitr::knit_child(text = src, quiet = TRUE)
+cat(res, sep = '\n')
+```
+
+---
+
+```{r, cleanup, include = FALSE}
+rm(list = ls())
+```
