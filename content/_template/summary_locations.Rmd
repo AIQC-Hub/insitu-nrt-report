@@ -15,7 +15,7 @@ create_dt_summary_tab(summary_loc_table, cols=loc_table_cols)
 
 ### Mapped locations of all profiles and three selected platforms
 
-```{r, t_summary_loc2, echo = FALSE, message = FALSE, warning = FALSE, fig.width = 10, fig.height = 10}
+```{r, t_summary_loc2, echo = FALSE, message = FALSE, warning = FALSE, fig.width = 10, fig.height = {{plot_height}}}
 lat_range <- range(summary_table_netcdf$latitude)
 lon_range <- range(summary_table_netcdf$longitude)
 
@@ -32,7 +32,7 @@ p_long_x_lat_platform3 <- get_loc_by_platform(summary_table_netcdf, "{{platform3
   create_region_scatter("Platform: {{platform3}}", lat_range, lon_range)
 
 print(plot_grid(p_long_x_lat, p_long_x_lat_platform1,
-                p_long_x_lat_platform2, p_long_x_lat_platform3, nrow = 2))
+                p_long_x_lat_platform2, p_long_x_lat_platform3, nrow = {{plot_nrow}}))
 
 rm(p_long_x_lat)
 rm(p_long_x_lat_platform1)

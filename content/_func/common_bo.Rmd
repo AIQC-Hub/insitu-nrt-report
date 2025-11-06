@@ -14,6 +14,7 @@ df_filtered_name <- NULL
 # Path
 #rsc_dir <- "../../data/nrt_bo"
 #rsc_dir <- "../data/nrt_bo"
+df_filtered_cache_name <- NULL
 
 # Data frame
 bo_file_name <- file.path(rsc_dir, parquet)
@@ -37,15 +38,15 @@ time_span4_to <- 2025
 longitude_var_name <- "precise_longitude"
 latitude_var_name <- "precise_latitude"
 
-bo_min_lon <- 6
-bo_max_lon <- 28
-bo_min_lat <- 54
-bo_max_lat <-  66
+r_min_lon <- 6
+r_max_lon <- 28
+r_min_lat <- 54
+r_max_lat <-  66
 
-bo_excl_lon_bl <- 6
-bo_excl_lat_bl <- 60
-bo_excl_lon_tr <- 15
-bo_excl_lat_tr <- 66
+r_excl_lon_bl <- 6
+r_excl_lat_bl <- 60
+r_excl_lon_tr <- 15
+r_excl_lat_tr <- 66
 
 # Platforms with multiple locations
 platform1 <- "UMFF9A13"
@@ -70,6 +71,14 @@ split_time_spans <- function(df) {
                           time_span2, time_span2_from, time_span2_to,
                           time_span3, time_span3_from, time_span3_to,
                           time_span4, time_span4_from, time_span4_to)
+}
+
+filer_locations <- function(df) {
+  filer_locations_common(df, r_min_lon, r_max_lon, r_min_lat, r_max_lat)
+}
+
+exclude_locations <- function(df) {
+  exclude_locations_common(df, r_excl_lon_bl, r_excl_lat_bl, r_excl_lon_tr, r_excl_lat_tr)
 }
 
 get_unique_profile_no <- function(df) {
