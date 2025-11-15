@@ -31,11 +31,9 @@ xaringanExtra::use_panelset()
 
 ## Exported Parquet Datasets
 
-All six Parquet files have been uploaded to Zenodo under the following DOI:
+All nine Parquet files have been uploaded to Zenodo under the following DOI:
 
-  * **DOI**: [10.5281/zenodo.17619571](https://doi.org/10.5281/zenodo.17619571)
-
-<br>
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17619571.svg)](https://doi.org/10.5281/zenodo.17619571)
 
 ::: {.panelset}
 ::: {.panel}
