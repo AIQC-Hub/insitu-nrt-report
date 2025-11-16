@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.3.2] - 2025-11-16
+### Added
+- Analysis summary sections to the main page
+
 ## [0.3.1] - 2025-11-16
 ### Changed
 - DOI link for the Parquet datasets
