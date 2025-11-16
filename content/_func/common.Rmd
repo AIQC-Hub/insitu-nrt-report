@@ -20,6 +20,7 @@ t_eda_netcdf <- file.path(template_path, "eda_netcdf.Rmd")
 t_eda_parquet <- file.path(template_path, "eda_parquet.Rmd")
 t_eda_duplicate <- file.path(template_path, "eda_duplicate.Rmd")
 t_eda_qc_over_time <- file.path(template_path, "eda_qc_over_time.Rmd")
+t_eda_qc4_fraction <- file.path(template_path, "eda_qc4_fraction.Rmd")
 
 # Kable wrapper
 kbl_table <- function(x) {

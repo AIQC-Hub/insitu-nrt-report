@@ -49,6 +49,14 @@ cat(res, sep = '\n')
 
 ---
 
+## Fraction of QC4 Flags per Profile
+```{r, eda_qc4_fraction, results = 'asis'}
+src <- knitr::knit_expand(t_eda_qc4_fraction)
+cat(src, sep = '\n')
+```
+
+---
+
 ## Distributions of QC 1 & 4 Flags Over Time
 ```{r, eda_qc_over_time, results = 'asis'}
 src <- knitr::knit_expand(t_eda_qc_over_time)
