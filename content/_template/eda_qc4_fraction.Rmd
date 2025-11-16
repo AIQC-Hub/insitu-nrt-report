@@ -1,0 +1,55 @@
+::: {.panelset}
+::: {.panel}
+
+### Arctic Ocean
+
+#### AR
+
+![](./images/p_qc4_fraction_ar_rg.png)
+
+#### GL
+
+![](./images/p_qc4_fraction_ar_gl.png)
+
+#### CORA
+
+![](./images/p_qc4_fraction_ar_cora.png)
+
+:::
+
+::: {.panel}
+
+### Baltic Sea
+
+#### BO
+
+![](./images/p_qc4_fraction_bo_rg.png)
+
+#### GL
+
+![](./images/p_qc4_fraction_bo_gl.png)
+
+#### CORA
+
+![](./images/p_qc4_fraction_bo_cora.png)
+
+:::
+
+::: {.panel}
+
+### Mediterranean Sea
+
+#### MO
+
+![](./images/p_qc4_fraction_mo_rg.png)
+
+#### GL
+
+![](./images/p_qc4_fraction_mo_gl.png)
+
+#### CORA
+
+![](./images/p_qc4_fraction_mo_cora.png)
+
+:::
+:::
