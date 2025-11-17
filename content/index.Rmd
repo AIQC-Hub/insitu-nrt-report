@@ -3,6 +3,10 @@ title: "Exploratory Data Analysis"
 description: |
   The site provides a collection of resources and summary reports containing statistics and other relevant information about the datasets.
 site: distill::distill_website
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
 ---
 
 ```{r, setup, include = FALSE}
